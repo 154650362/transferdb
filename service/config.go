@@ -42,6 +42,8 @@ type AppConfig struct {
 	SlowlogThreshold int    `toml:"slowlog-threshold" json:"slowlog-threshold"`
 	Threads          int    `toml:"threads" json:"threads"`
 	PprofPort        string `toml:"pprof-port" json:"pprof-port"`
+	HTTPPort         string `toml:"http-port" json:"http-port"`
+	JwtSecret        string `toml:"jwt-secret" json:"jwt-secret"`
 }
 
 type DiffConfig struct {
@@ -105,15 +107,26 @@ type SourceConfig struct {
 	ExcludeTable  []string `toml:"exclude-table" json:"exclude-table"`
 }
 
+//type TargetConfig struct {
+//	Username      string `toml:"username" json:"username"`
+//	Password      string `toml:"password" json:"password"`
+//	Host          string `toml:"host" json:"host"`
+//	Port          int    `toml:"port" json:"port"`
+//	ConnectParams string `toml:"connect-params" json:"connect-params"`
+//	MetaSchema    string `toml:"meta-schema" json:"meta-schema"`
+//	SchemaName    string `toml:"schema-name",json:"schema-name"`
+//	Overwrite     bool   `toml:"overwrite" json:"overwrite"`
+//}
+
 type TargetConfig struct {
-	Username      string `toml:"username" json:"username"`
-	Password      string `toml:"password" json:"password"`
-	Host          string `toml:"host" json:"host"`
-	Port          int    `toml:"port" json:"port"`
-	ConnectParams string `toml:"connect-params" json:"connect-params"`
-	MetaSchema    string `toml:"meta-schema" json:"meta-schema"`
-	SchemaName    string `toml:"schema-name",json:"schema-name"`
-	Overwrite     bool   `toml:"overwrite" json:"overwrite"`
+	Username      string `form:"username" toml:"username" json:"username" binding:"required"`
+	Password      string `form:"password" toml:"password" json:"password" binding:"required"`
+	Host          string `form:"host" toml:"host" json:"host" binding:"required"`
+	Port          int    `form:"port" toml:"port" json:"port" binding:"required"`
+	ConnectParams string `form:"connect-params" toml:"connect-params" toml:"connect-params" json:"connect-params" binding:"required"`
+	MetaSchema    string `form:"meta-schema" toml:"meta-schema" json:"meta-schema"`
+	SchemaName    string `form:"schema-name" toml:"schema-name",json:"schema-name" binding:"required"`
+	Overwrite     bool   `form:"overwrite" toml:"overwrite" json:"overwrite"`
 }
 
 type LogConfig struct {
