@@ -26,6 +26,7 @@ import (
 )
 
 // 程序配置文件
+//todo 需增加一个sync包， 保证并发， 后面再做
 type CfgFile struct {
 	AppConfig    AppConfig    `toml:"app" json:"app"`
 	FullConfig   FullConfig   `toml:"full" json:"full"`

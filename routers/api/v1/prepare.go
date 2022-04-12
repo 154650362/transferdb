@@ -45,10 +45,10 @@ import (
 //}
 
 func Prepare(c *gin.Context) {
+	var form service.TargetConfig
 	var code int
 	code = e.SUCCESS
 
-	var form service.TargetConfig
 	if err := c.Bind(&form); err != nil {
 		code = e.INVALID_PARAMS
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -59,16 +59,12 @@ func Prepare(c *gin.Context) {
 		return
 	}
 
-	//数据格式正确
-	// todo进行 调用真正的执行函数
-	//case "prepare":
-	//	// 表结构转换 - only prepare 阶段
-
 	// cfg 需要抽离处理
 	//todo cfg 需要理解是啥
 	//var cfg *service.CfgFile
 
 	Gcfg.TargetConfig = form
+
 	engine, err := server.NewMySQLEnginePrepareDB(Gcfg.TargetConfig, Gcfg.AppConfig.SlowlogThreshold, 1024)
 	if err != nil {
 		code = e.ERROR

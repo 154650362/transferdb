@@ -16,13 +16,17 @@ func InitRouter() *gin.Engine {
 		})
 	})
 
+	r.GET("/auth", GetAuth)
+
 	apiv1 := r.Group("/api/v1")
 	{
 
 		//health 状态
 		apiv1.GET("/test", v1.Test)
-		//todo
-		//apiv1.POST("/tests", v1.)
+
+		apiv1.POST("/prepare", v1.Prepare)
+
+		apiv1.POST("/full", v1.Full)
 		//
 
 	}
