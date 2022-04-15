@@ -1,11 +1,19 @@
-package utils
+package jwt
 
 import (
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/wentaojin/transferdb/conf"
+
 	"time"
 )
 
-var jwtSecret = []byte("888666")
+// todo 这里这样写会有个循环引入的问题。。import cycle not allowed， 需要解决
+// 好像通过分层解决了
+var jwtSecret = []byte(conf.Gcfg.AppConfig.JwtSecret)
+
+//var jwtSecret = []byte("123456")
+
+//这里用个函数来获取
 
 type Claims struct {
 	Username string `json:"username"`

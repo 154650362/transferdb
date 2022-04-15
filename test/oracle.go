@@ -25,14 +25,14 @@ import (
 
 func main() {
 	oraCfg := service.SourceConfig{
-		Username:      "marvin",
-		Password:      "marvin",
-		Host:          "172.16.4.87",
+		Username:      "test",
+		Password:      "test",
+		Host:          "192.168.1.122",
 		Port:          1521,
-		ServiceName:   "oratidb",
+		ServiceName:   "helowin",
 		ConnectParams: "poolMinSessions=10&poolMaxSessions=1000&poolWaitTimeout=60s&poolSessionMaxLifetime=1h&poolSessionTimeout=5m&poolIncrement=10&timezone=Local",
 		SessionParams: []string{"alter session set nls_date_format = 'yyyy-mm-dd hh24:mi:ss'"},
-		SchemaName:    "marvin",
+		SchemaName:    "test",
 		IncludeTable:  nil,
 		ExcludeTable:  nil,
 	}
@@ -45,8 +45,8 @@ func main() {
 		OracleDB: sqlDB,
 	}
 
-	for i := 0; i < 5500; i++ {
-		_, _, err := service.Query(engine.OracleDB, fmt.Sprintf(`CREATE TABLE "MARVIN"."STS%d" (	
+	for i := 0; i < 5; i++ {
+		_, _, err := service.Query(engine.OracleDB, fmt.Sprintf(`CREATE TABLE "TEST"."STS%d" (	
 	"DNO" VARCHAR2(10) CONSTRAINT "NN_STS_DNO%d" NOT NULL ENABLE, 
 	"YEAR" NUMBER(4,0) CONSTRAINT "NN_STS_YEAR%d" NOT NULL ENABLE, 
 	"IPNO" NUMBER(2,0), 
@@ -68,9 +68,9 @@ func main() {
 			panic(err)
 		}
 
-		_, _, err = service.Query(engine.OracleDB, fmt.Sprintf(`CREATE UNIQUE INDEX "MARVIN"."PK_STS%d" ON "MARVIN"."STS%d" ("DNO", "YEAR", "SNO")`, i, i))
+		_, _, err = service.Query(engine.OracleDB, fmt.Sprintf(`CREATE UNIQUE INDEX "TEST"."PK_STS%d" ON "MARVIN"."STS%d" ("DNO", "YEAR", "SNO")`, i, i))
 
-		_, _, err = service.Query(engine.OracleDB, fmt.Sprintf(`ALTER TABLE "MARVIN"."STS%d" ADD CONSTRAINT "PK_STS%d" PRIMARY KEY ("DNO", "YEAR", "SNO")`, i, i))
+		_, _, err = service.Query(engine.OracleDB, fmt.Sprintf(`ALTER TABLE "TEST"."STS%d" ADD CONSTRAINT "PK_STS%d" PRIMARY KEY ("DNO", "YEAR", "SNO")`, i, i))
 		if err != nil {
 			panic(err)
 		}

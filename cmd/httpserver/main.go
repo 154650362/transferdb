@@ -1,36 +1,17 @@
-/*
-Copyright © 2020 Marvin
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package main
 
 import (
 	"fmt"
+	"github.com/pkg/errors"
+	. "github.com/wentaojin/transferdb/conf"
+	"github.com/wentaojin/transferdb/pkg/signal"
 	"github.com/wentaojin/transferdb/routers"
+	"github.com/wentaojin/transferdb/service"
+	"go.uber.org/zap"
 	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
-
-	"github.com/pkg/errors"
-	"github.com/wentaojin/transferdb/service"
-
-	"github.com/wentaojin/transferdb/pkg/signal"
-
-	"go.uber.org/zap"
-
-	. "github.com/wentaojin/transferdb/conf"
 )
 
 //var (
@@ -57,7 +38,7 @@ func main() {
 		}
 		os.Exit(0)
 	}()
-
+	//log.Printf("%v", Gcfg)
 	// 初始化日志 logger
 	if err := service.NewZapLogger(Gcfg); err != nil {
 		log.Fatalf("create global zap logger failed: %v", err)
@@ -76,6 +57,7 @@ func main() {
 	// 启动web server
 	//todo 启动注册自己的的信息：addr，和当前时间
 	// 在 service目录下的heartbeat实现
+
 	router := routers.InitRouter()
 	s := &http.Server{
 		Addr:    fmt.Sprintf(":%s", Gcfg.AppConfig.HTTPPort),

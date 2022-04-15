@@ -3,7 +3,7 @@ package jwt
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/wentaojin/transferdb/pkg/e"
-	"github.com/wentaojin/transferdb/utils"
+	"github.com/wentaojin/transferdb/pkg/jwt"
 	"net/http"
 	"time"
 )
@@ -13,11 +13,12 @@ func JWT() gin.HandlerFunc {
 		var code int
 		var data interface{}
 		code = e.SUCCESS
-		token := c.Query("token")
+		//token := c.Query("token")
+		token := c.Request.Header.Get("Authorization")
 		if token == "" {
 			code = e.INVALID_PARAMS
 		} else {
-			claims, err := utils.ParseToken(token)
+			claims, err := jwt.ParseToken(token)
 			if err != nil {
 				code = e.ERROR_AUTH_CHECK_TOKEN_FAIL
 			} else if time.Now().Unix() > claims.ExpiresAt {

@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/wentaojin/transferdb/middleware/jwt"
 	v1 "github.com/wentaojin/transferdb/routers/api/v1"
 )
 
@@ -18,17 +19,19 @@ func InitRouter() *gin.Engine {
 
 	r.GET("/auth", GetAuth)
 
-	apiv1 := r.Group("/api/v1")
+	apiv1 := r.Group("/api/v1").Use(jwt.JWT())
 	{
 
-		//health 状态
 		apiv1.GET("/test", v1.Test)
-
+		//做其他任务必须先做prepare
+		//todo 待测试
 		apiv1.POST("/prepare", v1.Prepare)
+		//todo
 
+		//todo 待测试
 		apiv1.POST("/full", v1.Full)
-		//
-
+		//file server,使用query参数传递下载文件的参数
+		apiv1.GET("/file", v1.File)
 	}
 	return r
 }

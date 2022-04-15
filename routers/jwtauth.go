@@ -4,8 +4,8 @@ import (
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 	"github.com/wentaojin/transferdb/pkg/e"
+	"github.com/wentaojin/transferdb/pkg/jwt"
 	"github.com/wentaojin/transferdb/service"
-	"github.com/wentaojin/transferdb/utils"
 	"net/http"
 )
 
@@ -26,7 +26,7 @@ func GetAuth(c *gin.Context) {
 		//
 		isExist := service.Checkauth(username, password)
 		if isExist {
-			token, err := utils.GenerateToken(username, password)
+			token, err := jwt.GenerateToken(username, password)
 			if err != nil {
 				code = e.ERROR_AUTH_TOKEN
 			} else {

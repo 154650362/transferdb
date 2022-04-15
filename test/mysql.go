@@ -25,14 +25,14 @@ import (
 
 func main() {
 	mysqlCfg := service.TargetConfig{
-		Username:      "marvin",
-		Password:      "marvin",
-		Host:          "192.168.2.30",
-		Port:          5000,
+		Username:      "root",
+		Password:      "123456",
+		Host:          "192.168.1.112",
+		Port:          3306,
 		ConnectParams: "charset=utf8mb4&parseTime=True&loc=Local&multiStatements=true&tidb_txn_mode='optimistic'",
-		MetaSchema:    "steven",
+		MetaSchema:    "todb",
 	}
-	engine, err := server.NewMySQLEngineGeneralDB(mysqlCfg, 300)
+	engine, err := server.NewMySQLEngineGeneralDB(mysqlCfg, 300, 10)
 	if err != nil {
 		fmt.Println(err)
 	}

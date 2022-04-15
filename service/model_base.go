@@ -21,9 +21,15 @@ import (
 	"gorm.io/gorm"
 )
 
+// 这里使用type：timestamp 会报错。。
+//type BaseModel struct {
+//	CreatedAt string `gorm:"type:timestamp;not null;comment:'创建时间'" json:"createdAt"`
+//	UpdatedAt string `gorm:"type:timestamp;not null;comment:'更新时间'" json:"updatedAt"`
+//}
+
 type BaseModel struct {
-	CreatedAt string `gorm:"type:timestamp;not null;comment:'创建时间'" json:"createdAt"`
-	UpdatedAt string `gorm:"type:timestamp;not null;comment:'更新时间'" json:"updatedAt"`
+	CreatedAt string `gorm:"not null;comment:'创建时间'" json:"createdAt"`
+	UpdatedAt string `gorm:"not null;comment:'更新时间'" json:"updatedAt"`
 }
 
 func (v *BaseModel) BeforeCreate(db *gorm.DB) (err error) {

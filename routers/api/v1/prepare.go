@@ -19,6 +19,7 @@ import (
 	"github.com/wentaojin/transferdb/pkg/prepare"
 	"github.com/wentaojin/transferdb/server"
 	"github.com/wentaojin/transferdb/service"
+	"log"
 	"net/http"
 )
 
@@ -64,6 +65,8 @@ func Prepare(c *gin.Context) {
 	//var cfg *service.CfgFile
 
 	Gcfg.TargetConfig = form
+
+	log.Printf("%v", Gcfg)
 
 	engine, err := server.NewMySQLEnginePrepareDB(Gcfg.TargetConfig, Gcfg.AppConfig.SlowlogThreshold, 1024)
 	if err != nil {

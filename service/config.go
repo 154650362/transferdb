@@ -79,12 +79,12 @@ type CSVConfig struct {
 }
 
 type FullConfig struct {
-	ChunkSize        int  `toml:"chunk-size" json:"chunk-size"`
-	TaskThreads      int  `toml:"task-threads" json:"task-threads"`
-	TableThreads     int  `toml:"table-threads" json:"table-threads"`
-	SQLThreads       int  `toml:"sql-threads" json:"sql-threads"`
-	ApplyThreads     int  `toml:"apply-threads" json:"apply-threads"`
-	EnableCheckpoint bool `toml:"enable-checkpoint" json:"enable-checkpoint"`
+	ChunkSize        int  `form:"chunk-size" toml:"chunk-size" json:"chunk-size"`
+	TaskThreads      int  `form:"task-threads" toml:"task-threads" json:"task-threads"`
+	TableThreads     int  `form:"table-threads" toml:"table-threads" json:"table-threads"`
+	SQLThreads       int  `form:"sql-threads" toml:"sql-threads" json:"sql-threads"`
+	ApplyThreads     int  `form:"apply-threads" toml:"apply-threads" json:"apply-threads"`
+	EnableCheckpoint bool `form:"enable-checkpoint" toml:"enable-checkpoint" json:"enable-checkpoint"`
 }
 
 type AllConfig struct {
@@ -96,17 +96,30 @@ type AllConfig struct {
 }
 
 type SourceConfig struct {
-	Username      string   `toml:"username" json:"username"`
-	Password      string   `toml:"password" json:"password"`
-	Host          string   `toml:"host" json:"host"`
-	Port          int      `toml:"port" json:"port"`
-	ServiceName   string   `toml:"service-name" json:"service-name"`
-	ConnectParams string   `toml:"connect-params" json:"connect-params"`
-	SessionParams []string `toml:"session-params" json:"session-params"`
-	SchemaName    string   `toml:"schema-name" json:"schema-name"`
-	IncludeTable  []string `toml:"include-table" json:"include-table"`
-	ExcludeTable  []string `toml:"exclude-table" json:"exclude-table"`
+	Username      string   `form:"username" toml:"username" json:"username"`
+	Password      string   `form:"password" toml:"password" json:"password"`
+	Host          string   `form:"host" toml:"host" json:"host"`
+	Port          int      `form:"port" toml:"port" json:"port"`
+	ServiceName   string   `form:"service-name" toml:"service-name" json:"service-name"`
+	ConnectParams string   `form:"connect-params" toml:"connect-params" json:"connect-params"`
+	SessionParams []string `form:"session-params" toml:"session-params" json:"session-params"`
+	SchemaName    string   `form:"schema-name" toml:"schema-name" json:"schema-name"`
+	IncludeTable  []string `form:"include-table" toml:"include-table" json:"include-table"`
+	ExcludeTable  []string `form:"exclude-table" toml:"exclude-table" json:"exclude-table"`
 }
+
+//type SourceConfig struct {
+//	Username      string   `toml:"username" json:"username"`
+//	Password      string   `toml:"password" json:"password"`
+//	Host          string   `toml:"host" json:"host"`
+//	Port          int      `toml:"port" json:"port"`
+//	ServiceName   string   `toml:"service-name" json:"service-name"`
+//	ConnectParams string   `toml:"connect-params" json:"connect-params"`
+//	SessionParams []string `toml:"session-params" json:"session-params"`
+//	SchemaName    string   `toml:"schema-name" json:"schema-name"`
+//	IncludeTable  []string `toml:"include-table" json:"include-table"`
+//	ExcludeTable  []string `toml:"exclude-table" json:"exclude-table"`
+//}
 
 //type TargetConfig struct {
 //	Username      string `toml:"username" json:"username"`
