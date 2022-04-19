@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
-	//"github.com/wentaojin/transferdb/conf"
+	. "github.com/wentaojin/transferdb/conf"
+	"github.com/wentaojin/transferdb/server"
+
 	"github.com/wentaojin/transferdb/pkg/e"
-	//"github.com/wentaojin/transferdb/server"
 	"github.com/wentaojin/transferdb/service"
 	"io/ioutil"
 	"net/http"
@@ -21,13 +22,14 @@ type sqlfile struct {
 }
 
 // 需要知道要执行文件的target
+//todo 需要解析一个target
 func Sqlfile(c *gin.Context) {
 	file := c.Query("file")
 	fmt.Println(file)
 	valid := validation.Validation{}
 	a := sqlfile{File: file}
 	ok, _ := valid.Valid(&a)
-	data := make(map[string]interface{})
+	//data := make(map[string]interface{})
 	code := e.INVALID_PARAMS
 	if ok {
 		// 这里需要 执行文件
@@ -42,19 +44,15 @@ func Sqlfile(c *gin.Context) {
 			return
 		}
 
-		//engine, err := server.NewMySQLEngineGeneralDB(conf.Gcfg.TargetConfig, 300, 10)
-		//if err != nil {
-		//	service.Logger.Info("server run failed", zap.Error(errors.Cause(err)))
-		//}
-		sqls := strings.Split(string(sql), ";")
-		for _, sql := range sqls {
-			fmt.Println("------------------------------")
-			fmt.Println(sql)
-			//fmt.Println("------------------------------")
-			//cols, res, err := service.Query(engine.MysqlDB, "select * from t1")
-			//if err != nil {
-			//	fmt.Println(err)
-			//}
+		err = execsql(string(sql))
+		if err != nil {
+			code = e.ERROR
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code": code,
+				"msg":  e.GetMsg(code),
+				"data": err.Error(),
+			})
+			return
 		}
 		// 执行SQL
 		//service.Logger.Info("server run failed",sqls)
@@ -68,8 +66,7 @@ func Sqlfile(c *gin.Context) {
 		for _, err := range valid.Errors {
 			service.Logger.Warn(err.Message)
 		}
-		// 就要参数失败
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusBadRequest, gin.H{
 			"code": code,
 			"msg":  e.GetMsg(code),
 		})
@@ -79,6 +76,26 @@ func Sqlfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.GetMsg(code),
-		"data": data,
 	})
+}
+
+func execsql(sqls string) error {
+	engine, err := server.NewMySQLEngineGeneralDB(Gcfg.TargetConfig, 300, 10)
+	if err != nil {
+		return err
+	}
+	_, _, err = service.Query(engine.MysqlDB, fmt.Sprintf(`CREATE DATABASE IF NOT EXISTS %s`, conf.Gcfg.TargetConfig.SchemaName))
+	if err != nil {
+		return err
+	}
+
+	sql := strings.Split(string(sqls), ";")
+
+	for _, s := range sql {
+		_, _, err = service.Query(engine.MysqlDB, s)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
