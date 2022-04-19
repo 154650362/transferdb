@@ -6,6 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	. "github.com/wentaojin/transferdb/conf"
 	"github.com/wentaojin/transferdb/server"
+	"github.com/wentaojin/transferdb/utils"
+	"log"
 
 	"github.com/wentaojin/transferdb/pkg/e"
 	"github.com/wentaojin/transferdb/service"
@@ -30,6 +32,9 @@ func Sqlfile(c *gin.Context) {
 	a := sqlfile{File: file}
 	ok, _ := valid.Valid(&a)
 	//data := make(map[string]interface{})
+
+	//var sql
+
 	code := e.INVALID_PARAMS
 	if ok {
 		// 这里需要 执行文件
@@ -85,17 +90,21 @@ func execsql(sqls string) error {
 		return err
 	}
 	defer engine.MysqlDB.Close()
-	_, _, err = service.Query(engine.MysqlDB, fmt.Sprintf(`CREATE DATABASE IF NOT EXISTS %s`, conf.Gcfg.TargetConfig.SchemaName))
-	if err != nil {
-		return err
-	}
+	log.Println(Gcfg.TargetConfig.SchemaName)
+	//_, _, err = service.Query(engine.MysqlDB, fmt.Sprintf(`CREATE DATABASE IF NOT EXISTS %s`, Gcfg.TargetConfig.SchemaName))
+	//if err != nil {
+	//	return err
+	//}
 
 	sql := strings.Split(string(sqls), ";")
 
 	for _, s := range sql {
-		_, _, err = service.Query(engine.MysqlDB, s)
-		if err != nil {
-			return err
+		//log.Println(s)
+		if !utils.IsEmptyString(s) {
+			_, _, err = service.Query(engine.MysqlDB, s)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil

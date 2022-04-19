@@ -16,7 +16,7 @@ import (
 )
 
 func ReverseOracleToMySQLTableV2(engine *service.Engine, cfg *service.CfgFile) ([]string, error) {
-	files := make([]string, 2)
+	files := make([]string, 0)
 	startTime := time.Now()
 	service.Logger.Info("reverse table oracle to mysql start",
 		zap.String("schema", cfg.SourceConfig.SchemaName))
