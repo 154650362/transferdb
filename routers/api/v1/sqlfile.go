@@ -84,6 +84,7 @@ func execsql(sqls string) error {
 	if err != nil {
 		return err
 	}
+	defer engine.MysqlDB.Close()
 	_, _, err = service.Query(engine.MysqlDB, fmt.Sprintf(`CREATE DATABASE IF NOT EXISTS %s`, conf.Gcfg.TargetConfig.SchemaName))
 	if err != nil {
 		return err
