@@ -139,7 +139,7 @@ type TargetConfig struct {
 	Port          int    `form:"port" toml:"port" json:"port" binding:"required"`
 	ConnectParams string `form:"connect-params" toml:"connect-params" toml:"connect-params" json:"connect-params" binding:"required"`
 	MetaSchema    string `form:"meta-schema" toml:"meta-schema" json:"meta-schema"`
-	SchemaName    string `form:"schema-name" toml:"schema-name",json:"schema-name" binding:"required"`
+	SchemaName    string `form:"schema-name" toml:"schema-name" json:"schema-name" binding:"required"`
 	Overwrite     bool   `form:"overwrite" toml:"overwrite" json:"overwrite"`
 }
 

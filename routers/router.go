@@ -30,7 +30,12 @@ func InitRouter() *gin.Engine {
 
 		//todo 待测试
 		apiv1.POST("/full", v1.Full)
+
+		//todo 待测试
+		apiv1.POST("/reverse", v1.Reverse)
 		//file server,使用query参数传递下载文件的参数
+		//sql 执行接口，创建数据库执行sql文件
+		apiv1.GET("/sqlfile", v1.Sqlfile)
 		apiv1.GET("/file", v1.File)
 	}
 	return r

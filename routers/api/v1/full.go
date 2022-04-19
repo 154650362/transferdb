@@ -10,18 +10,6 @@ import (
 	"net/http"
 )
 
-//case "full":
-//// 全量数据 ETL 非一致性（基于某个时间点，而是直接基于现有 SCN）抽取，离线环境提供与原库一致性
-//engine, err := NewEngineDB(
-//cfg.SourceConfig, cfg.TargetConfig, cfg.AppConfig.SlowlogThreshold,
-//cfg.FullConfig.TableThreads*cfg.FullConfig.SQLThreads*cfg.FullConfig.ApplyThreads)
-//if err != nil {
-//return err
-//}
-//if err = taskflow.FullSyncOracleTableRecordToMySQL(cfg, engine); err != nil {
-//return err
-//}
-
 //包含三块内容， target， source， 以及full的
 type Fullform struct {
 	FullConfig   service.FullConfig   `form:"full" toml:"full" json:"full"`
@@ -29,7 +17,7 @@ type Fullform struct {
 	TargetConfig service.TargetConfig `form:"target" toml:"target" json:"target"`
 }
 
-//todo
+//todo 可能要改成异步， 待处理
 func Full(c *gin.Context) {
 	var form Fullform
 	var code int

@@ -17,6 +17,7 @@ type Reverseform struct {
 }
 
 func Reverse(c *gin.Context) {
+	var files []string
 	var form Reverseform
 	var code int
 	code = e.SUCCESS
@@ -46,7 +47,7 @@ func Reverse(c *gin.Context) {
 		return
 	}
 
-	if err = reverser.ReverseOracleToMySQLTable(engine, Gcfg); err != nil {
+	if files, err = reverser.ReverseOracleToMySQLTableV2(engine, Gcfg); err != nil {
 		code = e.ERROR
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"code": code,
@@ -59,5 +60,6 @@ func Reverse(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.GetMsg(code),
+		"data": files,
 	})
 }
