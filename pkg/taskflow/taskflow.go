@@ -37,6 +37,10 @@ const (
 */
 // 全量数据导出导入
 func FullSyncOracleTableRecordToMySQL(cfg *service.CfgFile, engine *service.Engine) error {
+	defer func() {
+		engine.MysqlDB.Close()
+		engine.OracleDB.Close()
+	}()
 	startTime := time.Now()
 	service.Logger.Info("all full table data sync start",
 		zap.String("schema", cfg.SourceConfig.SchemaName))

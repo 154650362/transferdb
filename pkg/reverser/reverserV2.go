@@ -16,6 +16,10 @@ import (
 )
 
 func ReverseOracleToMySQLTableV2(engine *service.Engine, cfg *service.CfgFile) ([]string, error) {
+	defer func() {
+		engine.MysqlDB.Close()
+		engine.OracleDB.Close()
+	}()
 	files := make([]string, 0)
 	startTime := time.Now()
 	service.Logger.Info("reverse table oracle to mysql start",
