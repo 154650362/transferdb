@@ -27,7 +27,7 @@ func main() {
 	oraCfg := service.SourceConfig{
 		Username:      "test",
 		Password:      "test",
-		Host:          "192.168.1.122",
+		Host:          "192.168.31.122",
 		Port:          1521,
 		ServiceName:   "helowin",
 		ConnectParams: "poolMinSessions=10&poolMaxSessions=1000&poolWaitTimeout=60s&poolSessionMaxLifetime=1h&poolSessionTimeout=5m&poolIncrement=10&timezone=Local",

@@ -18,11 +18,11 @@ package service
 import (
 	"database/sql"
 	"fmt"
+	"github.com/scylladb/go-set/strset"
 	"hash/crc32"
 	"strings"
 	"sync/atomic"
-
-	"github.com/scylladb/go-set/strset"
+	"time"
 
 	"github.com/scylladb/go-set"
 	"github.com/thinkeridea/go-extend/exstrings"
@@ -94,6 +94,8 @@ func Query(db *sql.DB, querySQL string) ([]string, []map[string]string, error) {
 			} else {
 				// 处理空字符串以及其他值情况
 				// 数据统一 string 格式显示
+				//todo 这里处理时间格式，
+
 				row[key] = string(v)
 			}
 		}
@@ -259,6 +261,15 @@ func (e *Engine) GetOracleTableRows(querySQL string, insertBatchSize int) ([]str
 						return cols, batchResults, err
 					}
 					rowsResult = append(rowsResult, fmt.Sprintf("%v", r))
+				//todo add by liuyu
+				case "sql.NullTime":
+					t, err := time.ParseInLocation("2006-01-02T15:04:05+08:00", string(raw), time.Local)
+					if err != nil {
+						//fmt.Println(t,err)
+						return cols, batchResults, err
+					}
+					r := t.Format("2006-01-02 15:04:05")
+					rowsResult = append(rowsResult, fmt.Sprintf("'%v'", r))
 				default:
 					ok := utils.IsNum(string(raw))
 					if ok {
