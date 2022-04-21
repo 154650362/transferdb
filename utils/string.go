@@ -106,6 +106,9 @@ func TrimLastChar(s string) string {
 
 // 判断字符是否是数字
 func IsNum(s string) bool {
+	if strings.ToUpper(s) == "NAN" {
+		return false
+	}
 	_, err := strconv.ParseFloat(s, 64)
 	return err == nil
 }

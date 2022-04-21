@@ -265,7 +265,6 @@ func (e *Engine) GetOracleTableRows(querySQL string, insertBatchSize int) ([]str
 				case "sql.NullTime":
 					t, err := time.ParseInLocation("2006-01-02T15:04:05+08:00", string(raw), time.Local)
 					if err != nil {
-						//fmt.Println(t,err)
 						return cols, batchResults, err
 					}
 					r := t.Format("2006-01-02 15:04:05")
@@ -275,6 +274,7 @@ func (e *Engine) GetOracleTableRows(querySQL string, insertBatchSize int) ([]str
 					if ok {
 						r, err := decimal.NewFromString(string(raw))
 						if err != nil {
+							fmt.Println(string(raw))
 							return cols, batchResults, err
 						}
 						if r.IsInteger() {
@@ -291,7 +291,12 @@ func (e *Engine) GetOracleTableRows(querySQL string, insertBatchSize int) ([]str
 							rowsResult = append(rowsResult, fmt.Sprintf("%v", r))
 						}
 					} else {
-						rowsResult = append(rowsResult, fmt.Sprintf("'%v'", string(raw)))
+						//rowsResult = append(rowsResult, fmt.Sprintf("'%v'", string(raw)))
+						if strings.Contains(string(raw), "'") {
+							rowsResult = append(rowsResult, fmt.Sprintf("'%v'", strings.Replace(string(raw), "'", "\\'", -1)))
+						} else {
+							rowsResult = append(rowsResult, fmt.Sprintf("'%v'", string(raw)))
+						}
 					}
 				}
 			}

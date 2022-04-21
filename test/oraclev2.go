@@ -26,13 +26,13 @@ import (
 func main() {
 	oraCfg := service.SourceConfig{
 		Username:      "test",
-		Password:      "test",
-		Host:          "192.168.31.122",
-		Port:          1522,
-		ServiceName:   "xe",
+		Password:      "test123",
+		Host:          "101.132.244.166",
+		Port:          1521,
+		ServiceName:   "helowin",
 		ConnectParams: "poolMinSessions=10&poolMaxSessions=1000&poolWaitTimeout=60s&poolSessionMaxLifetime=1h&poolSessionTimeout=5m&poolIncrement=10&timezone=Local",
-		SessionParams: []string{"ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'", "ALTER SESSION SET TIME_ZONE='Asia/Shanghai'"},
-		SchemaName:    "test",
+		SessionParams: []string{"ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'"},
+		SchemaName:    "SH",
 		IncludeTable:  nil,
 		ExcludeTable:  nil,
 	}
@@ -49,7 +49,7 @@ func main() {
 	//if err != nil {
 	//	fmt.Println(err)
 	//}
-	cols, res, err := service.Query(engine.OracleDB, "select * from test.marvin3 where rownum < 2")
+	cols, res, err := service.Query(engine.OracleDB, "select * from  SH.CUSTOMERS where rownum < 2")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -57,12 +57,12 @@ func main() {
 
 	fmt.Println(res)
 
-	cols, res, err = service.Query(engine.OracleDB, "select to_char(sysdate,'yyyy-mm-dd HH24:mi:ss') from dual")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(cols)
-
-	fmt.Println(res)
+	//cols, res, err = service.Query(engine.OracleDB, "select to_char(sysdate,'yyyy-mm-dd HH24:mi:ss') from dual")
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
+	//fmt.Println(cols)
+	//
+	//fmt.Println(res)
 
 }
